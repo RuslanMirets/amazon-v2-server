@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient, Product } from "@prisma/client";
 import * as dotenv from "dotenv";
+import slugify from "slugify";
 // import { generateSlug } from "src/utils/generate-slug";
 // import { getRandomNumber } from "src/utils/random-number";
 
@@ -17,16 +18,16 @@ const createProducts = async (quantity: number) => {
 		const product = await prisma.product.create({
 			data: {
 				name: productName,
-				slug: faker.helpers.slugify(productName).toLowerCase(),
+				slug: slugify(productName, { lower: true }),
 				description: faker.commerce.productDescription(),
 				price: +faker.commerce.price(10, 999, 0),
 				images: Array.from({
 					length: faker.datatype.number({ min: 2, max: 6 }),
-				}).map(() => faker.image.imageUrl()),
+				}).map(() => faker.image.imageUrl(500, 500)),
 				category: {
 					create: {
 						name: categoryName,
-						slug: faker.helpers.slugify(categoryName).toLowerCase(),
+						slug: slugify(categoryName, { lower: true }),
 					},
 				},
 				reviews: {

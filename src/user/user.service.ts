@@ -4,7 +4,7 @@ import {
 	NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
-import { returnObjectUser } from "./return-user.object";
+import { returnUserObject } from "./return-user.object";
 import { Prisma } from "@prisma/client";
 import { UserDto } from "./user.dto";
 import { hash } from "argon2";
@@ -17,7 +17,7 @@ export class UserService {
 		const user = await this.prisma.user.findUnique({
 			where: { id },
 			select: {
-				...returnObjectUser,
+				...returnUserObject,
 				favorites: {
 					select: {
 						id: true,
@@ -31,7 +31,7 @@ export class UserService {
 			},
 		});
 
-		if (!user) throw new Error("User not found");
+		if (!user) throw new NotFoundException("User not found");
 
 		return user;
 	}
