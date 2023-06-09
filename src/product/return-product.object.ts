@@ -10,12 +10,12 @@ export const returnProductObject: Prisma.ProductSelect = {
 	description: true,
 	slug: true,
 	createdAt: true,
+	category: { select: returnCategoryObject },
+	reviews: {
+		select: returnReviewObject,
+	},
 };
 
 export const returnProductObjectFullest: Prisma.ProductSelect = {
 	...returnProductObject,
-	reviews: {
-		select: returnReviewObject,
-	},
-	category: { select: returnCategoryObject },
 };
